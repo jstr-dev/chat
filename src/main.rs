@@ -1,23 +1,19 @@
-use druid::widget::{Container, Flex, Label, MainAxisAlignment};
-use druid::{AppLauncher, Widget, WidgetExt, WindowDesc};
+mod ui;
+mod state;
 
-fn init_ui() -> impl Widget<()> {
-    let flex_box = Flex::column()
-        .with_child(Label::new("Hello, World!"))
-        .with_child(Label::new("Bottom"))
-        .main_axis_alignment(MainAxisAlignment::SpaceBetween);
-
-    Container::new(flex_box)
-        .padding(10.0)
-}
+use druid::{AppLauncher, WindowDesc};
 
 fn main() {
-    let main_window = WindowDesc::new(init_ui())
+    let main_window = WindowDesc::new(ui::init())
         .title("Chat")
-        .window_size((400.0, 300.0));
+        .window_size((800.0, 800.0));
+
+    let state = state::AppState {
+        message: "".into()
+    };
 
     AppLauncher::with_window(main_window)
         .log_to_console()
-        .launch(())
+        .launch(state)
         .expect("Failed to launch application");
 }
