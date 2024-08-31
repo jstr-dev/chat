@@ -24,8 +24,13 @@ fn message_box() -> impl Widget<AppState> {
         .expand_width();
 
     let send_button = Button::new("Send")
-        .on_click(|_ctx, _data, _env| {
-            println!("Send button clicked");
+        .on_click(|_ctx, data: &mut AppState, _env| {
+            data.history.push_back(Message {
+                text: data.message.clone(),
+                date: 0
+            });
+
+            data.message = "".into();
         });
 
     Flex::row()
@@ -40,19 +45,18 @@ fn message_container() -> impl Widget<AppState> {
         Container::new(message_item())
             .padding(5.0)
     })
-    .expand_width()
-    .lens(AppState::history);
+        .expand_width()
+        .lens(AppState::history);
 
     Scroll::new(message_list)
-    .vertical() 
-    .expand_width()
+       .vertical() 
+        .expand_width()
 }
 
 pub fn init() -> impl Widget<AppState> {
     Flex::column()
         .with_flex_child(message_container(), 1.0)
-        .with_spacer(20.0)
-        .with_child(message_box())
+        .with_child(Flex::column().with_spacer(20.0).with_child(message_box()))
         .main_axis_alignment(MainAxisAlignment::SpaceBetween)
         .padding(10.0)
         .expand_width()
