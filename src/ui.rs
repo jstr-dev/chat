@@ -6,15 +6,13 @@ fn message_item() -> impl Widget<Message> {
     let mut date_sent = Label::dynamic(|data: &Message, _| format!("Date: {}", data.date.to_string().clone()));
     date_sent.set_text_color(Color::grey(0.5));
 
-    let content = Flex::column()
+    Flex::column()
         .with_child(Label::dynamic(|data: &Message, _| data.text.clone()))
         .with_spacer(5.0)
         .with_child(date_sent)
         .cross_axis_alignment(CrossAxisAlignment::Start)
         .padding(10.0)
-        .background(Color::grey(0.2));
-    
-    content
+        .background(Color::grey(0.2))
 }
 
 fn message_box() -> impl Widget<AppState> {
